@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = `${process.env.REACT_APP_API}/api`;
 
 const request = async (endpoint, options = {}) => {
   const token = localStorage.getItem('accessToken');
@@ -11,10 +11,9 @@ const request = async (endpoint, options = {}) => {
   const config = {
     ...options,
     headers,
-    // Add credentials so refresh token cookies are sent
-    credentials: 'omit', // Wait, only omit for simple cross-origin, let's use 'include' if we need cookies
+
+    credentials: 'omit', 
   };
-  // We need to send cookies for refresh, so 'include'
   config.credentials = 'include';
 
   try {
@@ -31,8 +30,7 @@ const request = async (endpoint, options = {}) => {
 
     if (!response.ok) {
       if (response.status === 401) {
-        // Token might be expired, a real app would try to /refresh here.
-        // For simplicity, we just trigger a CustomEvent to logout the user
+      
         window.dispatchEvent(new Event('auth:logout'));
       }
       throw new Error((data && data.message) || response.statusText);
