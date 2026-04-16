@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Card, Alert, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
@@ -10,14 +10,18 @@ const Login = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
     try {
       await login(email, password);
       navigate('/');
     } catch (err) {
       setError(err.message || 'Failed to login. Please check credentials.');
+      setLoading(false);
     }
   };
 
@@ -52,8 +56,15 @@ const Login = () => {
                   />
                 </Form.Group>
 
-                <Button variant="primary" type="submit" className="w-100">
-                  Log In
+                <Button variant="primary" type="submit" className="w-100" disabled={loading}>
+                  {loading ? (
+                    <>
+                      <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
+                      Logging in...
+                    </>
+                  ) : (
+                    'Log In'
+                  )}
                 </Button>
               </Form>
             </Card.Body>

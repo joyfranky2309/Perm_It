@@ -1,9 +1,25 @@
-import React, { useContext } from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import React, { useContext, useState, useEffect } from 'react';
+import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
 import { AuthContext } from '../context/AuthContext';
+import { api } from '../services/api';
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
+  const [userCount, setUserCount] = useState(null);
+
+  useEffect(() => {
+    if (user && user.role === 'admin') {
+      const fetchCount = async () => {
+        try {
+          const res = await api.get('/users?limit=1');
+          setUserCount(res.total !== undefined ? res.total : '?');
+        } catch (e) {
+          setUserCount('Error');
+        }
+      };
+      fetchCount();
+    }
+  }, [user]);
 
   const renderAdminDashboard = () => (
     <Row>
@@ -11,7 +27,7 @@ const Dashboard = () => {
         <Card className="custom-card mb-4 text-center">
           <Card.Body>
             <Card.Title>Total Users</Card.Title>
-            <h2>--</h2>
+            <h2>{userCount === null ? <Spinner animation="border" size="sm" /> : userCount}</h2>
             <Card.Text>System wide users</Card.Text>
           </Card.Body>
         </Card>

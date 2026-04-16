@@ -117,7 +117,12 @@ const UserManagement = () => {
         </thead>
         <tbody>
           {loading ? (
-            <tr><td colSpan="5" className="text-center">Loading...</td></tr>
+            <tr>
+              <td colSpan="5" className="text-center py-5">
+                <Spinner animation="border" variant="primary" />
+                <div className="mt-2 text-muted">Loading users...</div>
+              </td>
+            </tr>
           ) : filteredUsers.map(u => (
             <tr key={u._id}>
               <td>{u.name}</td>

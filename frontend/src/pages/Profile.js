@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Container, Card, Form, Button, Alert, Row, Col } from 'react-bootstrap';
+import { Container, Card, Form, Button, Alert, Row, Col, Spinner } from 'react-bootstrap';
 import { api } from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 
@@ -9,6 +9,7 @@ const Profile = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [profileData, setProfileData] = useState(null);
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -28,6 +29,7 @@ const Profile = () => {
     e.preventDefault();
     setMessage('');
     setError('');
+    setUpdating(true);
     try {
       const payload = { name: formData.name };
       if (formData.password) {
@@ -39,10 +41,17 @@ const Profile = () => {
       setFormData(prev => ({ ...prev, password: '' })); // Clear password field
     } catch (err) {
       setError(err.message || 'Error updating profile');
+    } finally {
+      setUpdating(false);
     }
   };
 
-  if (!profileData) return <Container>Loading...</Container>;
+  if (!profileData) return (
+    <Container className="d-flex flex-column justify-content-center align-items-center py-5">
+      <Spinner animation="border" variant="primary" style={{ width: '3rem', height: '3rem' }} />
+      <span className="mt-3 text-muted">Retrieving profile data...</span>
+    </Container>
+  );
 
   return (
     <Container>
@@ -86,7 +95,16 @@ const Profile = () => {
                   />
                 </Form.Group>
                 
-                <Button variant="primary" type="submit">Update Profile</Button>
+                <Button variant="primary" type="submit" disabled={updating}>
+                  {updating ? (
+                    <>
+                      <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
+                      Updating...
+                    </>
+                  ) : (
+                    'Update Profile'
+                  )}
+                </Button>
               </Form>
             </Card.Body>
           </Card>
