@@ -97,8 +97,12 @@ const Profile = () => {
               <ul className="list-unstyled mb-0">
                 <li><strong>Created At:</strong> {new Date(profileData.createdAt).toLocaleString()}</li>
                 <li><strong>Last Updated:</strong> {new Date(profileData.updatedAt).toLocaleString()}</li>
-                {profileData.createdBy && <li><strong>Created By (ID):</strong> {profileData.createdBy}</li>}
-                {profileData.updatedBy && <li><strong>Updated By (ID):</strong> {profileData.updatedBy}</li>}
+                {profileData.createdBy && (
+                  <li><strong>Created By:</strong> {typeof profileData.createdBy === 'object' ? `${profileData.createdBy.name} (${profileData.createdBy.role})` : profileData.createdBy}</li>
+                )}
+                {profileData.updatedBy && (
+                  <li><strong>Updated By:</strong> {typeof profileData.updatedBy === 'object' ? `${profileData.updatedBy.name} (${profileData.updatedBy.role})` : profileData.updatedBy}</li>
+                )}
               </ul>
             </Card.Body>
           </Card>

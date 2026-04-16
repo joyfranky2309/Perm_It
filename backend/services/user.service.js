@@ -24,7 +24,7 @@ const getAllUsers = async (filters) => {
   const skip = (page - 1) * limit;
 
   const total = await User.countDocuments(query);
-  const users = await User.find(query).select('-password -refreshToken').skip(skip).limit(limit);
+  const users = await User.find(query).select('-password -refreshToken').populate('createdBy', 'name role').populate('updatedBy', 'name role').skip(skip).limit(limit);
 
   return {
     data: users,
@@ -36,7 +36,7 @@ const getAllUsers = async (filters) => {
 };
 
 const getMe = async (userId) => {
-  const user = await User.findById(userId).select('-password -refreshToken');
+  const user = await User.findById(userId).select('-password -refreshToken').populate('createdBy', 'name role').populate('updatedBy', 'name role');
   if (!user) {
     throw new Error('User not found');
   }
@@ -59,7 +59,7 @@ const updateMe = async (userId, updateData) => {
     filteredData.password = await bcrypt.hash(updateData.password, 12);
   }
 
-  const user = await User.findByIdAndUpdate(userId, filteredData, { new: true }).select('-password -refreshToken');
+  const user = await User.findByIdAndUpdate(userId, filteredData, { new: true }).select('-password -refreshToken').populate('createdBy', 'name role').populate('updatedBy', 'name role');
   if (!user) {
     throw new Error('User not found');
   }
@@ -67,7 +67,7 @@ const updateMe = async (userId, updateData) => {
 };
 
 const getUserById = async (userId) => {
-  const user = await User.findById(userId).select('-password -refreshToken');
+  const user = await User.findById(userId).select('-password -refreshToken').populate('createdBy', 'name role').populate('updatedBy', 'name role');
   if (!user) {
     throw new Error('User not found');
   }
@@ -98,7 +98,7 @@ const createUser = async (userData, createdBy) => {
   await newUser.save();
 
   // Return user without password
-  const user = await User.findById(newUser._id).select('-password -refreshToken');
+  const user = await User.findById(newUser._id).select('-password -refreshToken').populate('createdBy', 'name role').populate('updatedBy', 'name role');
   return user;
 };
 
@@ -124,7 +124,7 @@ const updateUser = async (userId, updateData, updatedBy, requesterRole) => {
   // Add updatedBy
   updateData.updatedBy = updatedBy;
 
-  const user = await User.findByIdAndUpdate(userId, updateData, { new: true }).select('-password -refreshToken');
+  const user = await User.findByIdAndUpdate(userId, updateData, { new: true }).select('-password -refreshToken').populate('createdBy', 'name role').populate('updatedBy', 'name role');
   return user;
 };
 

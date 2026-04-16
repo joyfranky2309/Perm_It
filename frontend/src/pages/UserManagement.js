@@ -19,8 +19,8 @@ const UserManagement = () => {
     try {
       setLoading(true);
       // Assuming backend supports these or we do client side. We'll fetch all and do client side for simplicity.
-      const data = await api.get('/users');
-      setUsers(data.users || data);
+      const responseData = await api.get('/users');
+      setUsers(responseData.data || responseData.users || responseData);
     } catch (err) {
       console.error('Failed to fetch users', err);
     } finally {
