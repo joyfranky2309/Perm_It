@@ -4,7 +4,7 @@ import { api } from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 
 const Profile = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({ name: '', password: '' });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');

@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }) => {
     const handleLogoutEvent = () => logout();
     window.addEventListener('auth:logout', handleLogoutEvent);
     return () => window.removeEventListener('auth:logout', handleLogoutEvent);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const login = async (email, password) => {
