@@ -15,10 +15,10 @@ const seedAdmin = async () => {
       process.exit(0);
     }
 
-    const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@123';
+    const adminPassword = process.env.ADMIN_PASSWORD ;
     const admin = new User({
-      name: process.env.ADMIN_NAME || 'Admin',
-      email: process.env.ADMIN_EMAIL || 'admin@example.com',
+      name: process.env.ADMIN_NAME ,
+      email: process.env.ADMIN_EMAIL,
       password: await bcrypt.hash(adminPassword, 12),
       role: 'admin',
       status: 'active',
