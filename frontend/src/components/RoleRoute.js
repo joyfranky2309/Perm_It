@@ -10,7 +10,7 @@ const RoleRoute = ({ children, allowedRoles }) => {
   }
 
   if (!allowedRoles.includes(user.role)) {
-    return <Navigate to="/" replace />; // Redirect unauthorized to Dashboard
+    return <Navigate to="/" replace />; 
   }
 
   return children;

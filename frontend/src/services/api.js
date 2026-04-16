@@ -18,7 +18,6 @@ const request = async (endpoint, options = {}) => {
 
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, config);
-    // If 204 No Content, just return null
     if (response.status === 204) return null;
 
     let data;
