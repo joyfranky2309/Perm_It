@@ -115,3 +115,15 @@ Perm_IT/
         ├── pages/            # Application Views (Login, Dashboard, UserManagement)
         └── services/         # API abstraction & fetch wrappers
 ```
+## Demo Credentials
+Admin:
+Email: blastoise@permitums.com
+Password: bigmanblastoise23
+
+Manager:
+Email: hameeda@permitums.com
+Password: hameeda123
+
+User:
+Email: joyfranksebastian23@gmail.com
+Password: joyfrank123
